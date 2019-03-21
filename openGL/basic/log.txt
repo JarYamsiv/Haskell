@@ -1,0 +1,2 @@
+[ 03/21/19 21:43:14 ] :  sudo apt-get install freeglut3-dev
+[ 03/21/19 21:44:56 ] :  cabal install GLUT
