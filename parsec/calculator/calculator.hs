@@ -11,7 +11,10 @@ parseNumber = do
 
 calculation :: Parser Int
 calculation = do
-  parseNumber
+  n1 <- parseNumber
+  char '+'
+  n2 <- parseNumber
+  return (n1+n2)
 
 calculate :: String -> String
 calculate s = 
