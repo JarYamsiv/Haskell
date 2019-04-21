@@ -1,6 +1,9 @@
 module Main where
 import Grammar
 import Tokens
+import System.Environment
+import System.IO  
+import Control.Monad
 
 type Env = String -> Exp
 emptyEnv = error "Not found"
@@ -21,10 +24,28 @@ eval (Let s e1 e2) env = eval e2 env'
 run :: Exp -> Int
 run e = eval e emptyEnv
 
+
 main :: IO ()
 main = do
-    s <- getContents
-    let ast = parseCalc (scanTokens s)
+    -- I can make some changes here to make it read from command line
+    args <- getArgs
+
+    -- let a = if (length args) == 0 
+    --     then
+    --         do
+    --             contents <- getContents
+    --             return (contents)
+    --     else
+    --         do
+    --             handle <- openFile (head args) ReadMode
+    --             contents <- hGetContents handle
+    --             return (contents)
+
+    handle <- openFile (head args) ReadMode
+    contents <- hGetContents handle
+    -- print contents
+    -- s <- getContents
+    let ast = parseCalc (scanTokens contents)
     print ast
     print (run ast)
     
