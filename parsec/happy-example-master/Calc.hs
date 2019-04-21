@@ -27,25 +27,28 @@ run e = eval e emptyEnv
 
 main :: IO ()
 main = do
-    -- I can make some changes here to make it read from command line
+    -- I can make some changes here to make it read from command line (made)
     args <- getArgs
 
     -- let a = if (length args) == 0 
     --     then
     --         do
     --             contents <- getContents
-    --             return (contents)
+    --             parse contents
     --     else
     --         do
-    --             handle <- openFile (head args) ReadMode
-    --             contents <- hGetContents handle
-    --             return (contents)
+    --             contents <- getContents
+    --             parse contents
+    -- print "end"
+
+    -- print a
 
     handle <- openFile (head args) ReadMode
     contents <- hGetContents handle
-    -- print contents
-    -- s <- getContents
+
     let ast = parseCalc (scanTokens contents)
     print ast
     print (run ast)
+
+
     

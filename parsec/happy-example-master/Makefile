@@ -12,3 +12,6 @@ Calc : Tokens.hs Grammar.hs Calc.hs
 clean:
 	rm -f Calc Grammar.hs Tokens.hs *.o *.hi
     
+
+io:io.hs
+	ghc io.hs
