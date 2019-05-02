@@ -28,7 +28,18 @@ run e = eval e emptyEnv
 main :: IO ()
 main = do
     -- I can make some changes here to make it read from command line (made)
-    args <- getArgs
+
+    let readContent = do
+        args <- getArgs
+        if (length args) == 0 
+            then do --It doesn't require a do if it's only one statement
+                contents <- getContents
+                return contents
+            else do
+                handle <- openFile (head args) ReadMode
+                contents <- hGetContents handle
+                return contents
+
 
     -- let a = if (length args) == 0 
     --     then
@@ -43,8 +54,10 @@ main = do
 
     -- print a
 
-    handle <- openFile (head args) ReadMode
-    contents <- hGetContents handle
+    -- handle <- openFile (head args) ReadMode
+    -- contents <- hGetContents handle
+
+    contents <- readContent
 
     let ast = parseCalc (scanTokens contents)
     print ast

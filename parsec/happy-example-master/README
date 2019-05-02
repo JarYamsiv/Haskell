@@ -4,6 +4,8 @@ processor in Haskell.
 To build this, you will need to install Alex and Happy. The easiest way to get
 them is via Hackage:
 
-$ cabal install alex
-$ cabal install happy
-# sudo apt install alex happy
+`$ cabal install alex`
+`$ cabal install happy`
+
+`$ sudo apt install alex happy`
+
