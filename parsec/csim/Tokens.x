@@ -22,6 +22,9 @@ tokens :-
   \/                            { \s -> TokenDiv }
   \(                            { \s -> TokenLParen }
   \)                            { \s -> TokenRParen }
+  \{                            { \s -> TokenLCurl }
+  \}                            { \s -> TokenRCurl }
+
   $alpha [$alpha $digit \_ \']* { \s -> TokenSym s }
 
 {
@@ -39,6 +42,8 @@ data Token = TokenLet
            | TokenDiv
            | TokenLParen
            | TokenRParen
+           | TokenLCurl
+           | TokenRCurl
            deriving (Eq,Show)
 
 scanTokens = alexScanTokens

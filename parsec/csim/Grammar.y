@@ -20,6 +20,8 @@ import Tokens
     '/' { TokenDiv }
     '(' { TokenLParen }
     ')' { TokenRParen }
+    '{' { TokenLCurl}
+    '}' { TokenRCurl}
 
 %right in
 %nonassoc '>' '<'
@@ -33,6 +35,7 @@ Statements : Statement Statements {$1:$2}
             |                       {[]}
 
 Statement : var '=' Exp      { Assignment $1 $3}
+          | if '(' var ')' '{' Statements '}' {If $3 $6}
 
 Exp : let var '=' Exp in Exp { Let $2 $4 $6 }
     | Exp '+' Exp            { Plus $1 $3 }
@@ -68,6 +71,7 @@ type Statements = [Statement]
 
 
 data Statement = Assignment String Exp
+                | If String Statements
                 deriving Show
 
 }

@@ -36,6 +36,7 @@ translateExp (Let s e1 e2) = ""
 
 translateStatement :: Statement -> String
 translateStatement (Assignment v e) = v++"="++(translateExp e)
+translateStatement (If cond st) = "if("++cond++"){\n"++(translateStatements st)++"\n}"
 
 translateStatements :: Statements -> String
 translateStatements (a:b) = (translateStatement a)++"\n"++(translateStatements b)
