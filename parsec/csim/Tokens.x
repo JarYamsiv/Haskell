@@ -26,6 +26,17 @@ tokens :-
   \)                            { \s -> TokenRParen }
   \{                            { \s -> TokenLCurl }
   \}                            { \s -> TokenRCurl }
+  
+  \=\=                          { \s -> TokenEQ }
+  \!\=                          { \s -> TokenNEQ }
+  \>                            { \s -> TokenGT }
+  \<                            { \s -> TokenLT }
+  \>\=                          { \s -> TokenGTEQ }
+  \<\=                          { \s -> TokenLTEQ }
+
+  \&\&                          { \s -> TokenAND }
+  \|\|                          { \s -> TokenOR }
+  \!                            { \s -> TokenNOT }              
 
   $alpha [$alpha $digit \_ \']* { \s -> TokenSym s }
 
@@ -48,6 +59,18 @@ data Token = TokenLet
            | TokenRParen
            | TokenLCurl
            | TokenRCurl
+
+           | TokenEQ
+           | TokenNEQ
+           | TokenGT
+           | TokenLT
+           | TokenGTEQ
+           | TokenLTEQ
+
+           | TokenOR
+           | TokenAND
+           | TokenNOT
+
            deriving (Eq,Show)
 
 scanTokens = alexScanTokens

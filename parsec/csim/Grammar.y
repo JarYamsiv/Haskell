@@ -25,10 +25,23 @@ import Tokens
     '{' { TokenLCurl}
     '}' { TokenRCurl}
 
+    "==" { TokenEQ }
+    "!=" { TokenNEQ }
+    '>' { TokenGT }
+    '<' { TokenLT }
+    ">=" { TokenGTEQ }
+    "<=" { TokenLTEQ }
+    
+    "&&" { TokenAND }
+    "||" { TokenOR }
+    '!' { TokenNOT }
+
 %right in
 %nonassoc '>' '<'
+%nonassoc ">=" "<="
 %left '+' '-'
 %left '*' '/'
+%left "&&" "||"
 %left NEG
 
 %%
@@ -37,9 +50,9 @@ Statements : Statement Statements {$1:$2}
             |                       {[]}
 
 Statement : var '=' Exp      { Assignment $1 $3}
-          | if '(' Exp ')' '{' Statements '}' {If $3 $6}
-          | if '(' Exp ')' '{' Statements '}' else '{' Statements '}' {IfEl $3 $6 $10}
-          | while '(' Exp ')' '{' Statements '}' {While $3 $6}
+          | if '(' RelExp ')' '{' Statements '}' {If $3 $6}
+          | if '(' RelExp ')' '{' Statements '}' else '{' Statements '}' {IfEl $3 $6 $10}
+          | while '(' RelExp ')' '{' Statements '}' {While $3 $6}
 
 Exp : let var '=' Exp in Exp { Let $2 $4 $6 }
     | Exp '+' Exp            { Plus $1 $3 }
@@ -51,7 +64,12 @@ Exp : let var '=' Exp in Exp { Let $2 $4 $6 }
     | int                    { Int $1 }
     | var                    { Var $1 }
 
-
+RelExp : Exp '>' Exp        { Gt $1 $3}
+       | Exp '<' Exp        { Lt $1 $3}
+       | Exp ">=" Exp       { Gteq $1 $3}
+       | Exp "<=" Exp       { Lteq $1 $3}
+       | Exp "==" Exp       { Eq $1 $3}
+       | Exp "!=" Exp       { Neq $1 $3}
 
 
 
@@ -75,9 +93,20 @@ type Statements = [Statement]
 
 
 data Statement = Assignment String Exp
-                | If Exp Statements
-                | IfEl Exp Statements Statements
-                | While Exp Statements
+                | If RelExp Statements
+                | IfEl RelExp Statements Statements
+                | While RelExp Statements
                 deriving Show
+
+data RelExp = Gt Exp Exp
+            | Lt Exp Exp
+            | Gteq Exp Exp
+            | Lteq Exp Exp
+            | Eq Exp Exp
+            | Neq Exp Exp
+            | Not RelExp
+            | And RelExp RelExp
+            | Or RelExp RelExp
+            deriving Show
 
 }

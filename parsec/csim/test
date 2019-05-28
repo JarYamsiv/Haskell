@@ -2,20 +2,19 @@ a = 5
 t = 8
 b = b+1
 r = 4-t
-if(a){
+if(a>0){
 	r = 9
 	y = 8-y
 }
 
-if(c){
+if(a>0){
 	r = 6
 	t = r+y
 }
 else{
-	r = 9
+	while(a>0)
+	{
+		a = a - 1
+	}
 }
 
-while(4+5)
-{
-	a = 3
-}
