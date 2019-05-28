@@ -16,6 +16,7 @@ tokens :-
   if                            { \s -> TokenIf }
   else                          { \s -> TokenElse }
   while                         { \s -> TokenWhile}
+  end                           { \s -> TokenEnd}
   $digit+                       { \s -> TokenInt (read s) }
   \=                            { \s -> TokenEq }
   \+                            { \s -> TokenPlus }
@@ -48,6 +49,7 @@ data Token = TokenLet
            | TokenIf
            | TokenElse
            | TokenWhile
+           | TokenEnd
            | TokenInt Int
            | TokenSym String
            | TokenEq

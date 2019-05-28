@@ -13,6 +13,7 @@ import Tokens
     if  { TokenIf }
     else { TokenElse }
     while { TokenWhile }
+    end { TokenEnd}
     int { TokenInt $$ }
     var { TokenSym $$ }
     '=' { TokenEq }
@@ -50,7 +51,7 @@ Statements : Statement Statements {$1:$2}
             |                       {[]}
 
 Statement : var '=' Exp      { Assignment $1 $3}
-          | if '(' RelExp ')' '{' Statements '}' {If $3 $6}
+          | if  RelExp   Statements end {If $2 $3}
           | if '(' RelExp ')' '{' Statements '}' else '{' Statements '}' {IfEl $3 $6 $10}
           | while '(' RelExp ')' '{' Statements '}' {While $3 $6}
 

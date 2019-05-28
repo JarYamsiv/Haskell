@@ -1,20 +1,14 @@
-a = 5
-t = 8
-b = b+1
-r = 4-t
-if(a>0){
-	r = 9
-	y = 8-y
-}
+a=5
+v=6
+x=v+a
 
-if(a>0){
-	r = 6
-	t = r+y
-}
-else{
-	while(a>0)
-	{
-		a = a - 1
-	}
-}
+if a+v < 56
+	a=67
+	if a >0
+		a=98
+	end
+	g=737474
+end
+
+b=98
 
