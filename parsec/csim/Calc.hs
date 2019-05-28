@@ -5,25 +5,6 @@ import System.Environment
 import System.IO  
 import Control.Monad
 
-type Env = String -> Exp
-emptyEnv = error "Not found"
-envLookup s env = env s
-envBind s v env = (\s' -> if s == s' then v else env s)
-
-eval :: Exp -> Env -> Int
-eval (Int v) _         = v
-eval (Plus e1 e2) env  = (eval e1 env) + (eval e2 env)
-eval (Minus e1 e2) env = (eval e1 env) - (eval e2 env)
-eval (Times e1 e2) env = (eval e1 env) * (eval e2 env)
-eval (Div e1 e2) env   = (eval e1 env) `div` (eval e2 env)
-eval (Negate e) env    = -(eval e env)
-eval (Var s) env       = eval (envLookup s env) env
-eval (Let s e1 e2) env = eval e2 env'
-    where env' = envBind s e1 env
-    
-run :: Exp -> Int
-run e = eval e emptyEnv
-
 translateExp :: Exp -> String
 translateExp (Int v) = show v
 translateExp (Plus e1 e2) = (translateExp e1)++"+"++(translateExp e2)
@@ -36,7 +17,9 @@ translateExp (Let s e1 e2) = ""
 
 translateStatement :: Statement -> String
 translateStatement (Assignment v e) = v++"="++(translateExp e)
-translateStatement (If cond st) = "if("++cond++"){\n"++(translateStatements st)++"\n}"
+translateStatement (If cond st) = "if("++(translateExp cond)++"){\n"++(translateStatements st)++"}"
+translateStatement (IfEl cond st1 st2) = "if("++(translateExp cond)++"){\n"++(translateStatements st1)++"}else{\n"++(translateStatements st2)++"}"
+translateStatement (While cond st) = "while("++(translateExp cond)++"){\n"++(translateStatements st)++"}"
 
 translateStatements :: Statements -> String
 translateStatements (a:b) = (translateStatement a)++"\n"++(translateStatements b)

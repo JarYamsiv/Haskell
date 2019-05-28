@@ -10,7 +10,9 @@ import Tokens
 %token
     let { TokenLet }
     in  { TokenIn }
-    if  { TokenIf}
+    if  { TokenIf }
+    else { TokenElse }
+    while { TokenWhile }
     int { TokenInt $$ }
     var { TokenSym $$ }
     '=' { TokenEq }
@@ -35,7 +37,9 @@ Statements : Statement Statements {$1:$2}
             |                       {[]}
 
 Statement : var '=' Exp      { Assignment $1 $3}
-          | if '(' var ')' '{' Statements '}' {If $3 $6}
+          | if '(' Exp ')' '{' Statements '}' {If $3 $6}
+          | if '(' Exp ')' '{' Statements '}' else '{' Statements '}' {IfEl $3 $6 $10}
+          | while '(' Exp ')' '{' Statements '}' {While $3 $6}
 
 Exp : let var '=' Exp in Exp { Let $2 $4 $6 }
     | Exp '+' Exp            { Plus $1 $3 }
@@ -71,7 +75,9 @@ type Statements = [Statement]
 
 
 data Statement = Assignment String Exp
-                | If String Statements
+                | If Exp Statements
+                | IfEl Exp Statements Statements
+                | While Exp Statements
                 deriving Show
 
 }
