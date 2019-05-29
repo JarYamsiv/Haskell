@@ -45,7 +45,7 @@ main = do
 
     let ast = parseCalc (scanTokens contents)
 
-    let (compiled,_,_) = (dotStatements (ast,0,[Nothing]))
+    let (compiled,_,_) = (dotStatements (ast,0,[]))
     putStr ("digraph{\n"++compiled++"\n}")
     -- print (run ast)
 

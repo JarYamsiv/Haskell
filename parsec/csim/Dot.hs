@@ -22,34 +22,39 @@ module Dot where
     --compiling the statement
     --o/p (statementLabel , nodename)
     --i/p (statement,node_count,lst node list)
-    dotStatement :: (Statement,Int,[Maybe String]) -> (String,[Maybe String], Int)
+    dotStatement :: (Statement,Int,[(String,Int)]) -> (String,[(String,Int)], Int)
     dotStatement ((Assignment v e),node_id,last_node) = 
         let
             nodename = "a"++(show node_id)
             statement = v++"="++(dotExp e)
-            makeCon x= case x of
-                            Nothing -> ""
-                            Just n -> n++"->"++nodename++"\n"
+            makeCon (x,t)= 
+                case t of
+                    0 -> x++"->"++nodename++"\n"
+                    1 -> x++"->"++nodename++"[color=green label=\"true\"]\n"
+                    2 -> x++"->"++nodename++"[color=red label=\"false\"]\n"
+                    _ -> x++"->"++nodename++"\n"
             lastNodeCon = concat (map makeCon last_node)
             node = nodename++"[shape=box label=\""++statement++"\"]\n" ++ lastNodeCon
         in
-            (node,[Just nodename] , node_id+1)
+            (node,[(nodename,0)] , node_id+1)
 
     dotStatement ((If cond st),node_id,last_node) = 
         let
             nodename = "i"++(show node_id)
             label = dotRelExp cond
 
-            makeCon x= case x of
-                Nothing -> ""
-                Just n -> n++"->"++nodename++"\n"
+            makeCon (x,t)=  
+                case t of
+                    0 -> x++"->"++nodename++"\n"
+                    1 -> x++"->"++nodename++"[color=green]\n"
             lastNodeCon = concat (map makeCon last_node)
 
-            (nodesData , node_list , new_id ) = dotStatements (st,node_id+1 ,[Just nodename] )
+            (nodesData , node_list , new_id ) = dotStatements (st,node_id+1 ,[(nodename,1)] )
 
             node = nodename++"[label=\""++label++"\"]" ++ lastNodeCon ++ nodesData
         in
-            (node,[Just nodename]++node_list,new_id)
+            (node,[(nodename,2)]++node_list,new_id )
+            
 
 
     -- dotStatement (IfEl cond st1 st2) = 
@@ -80,12 +85,14 @@ module Dot where
 
     -- i/p : ( statement list , node count , last node list)
     -- o/p : ( node , last node elist , after node count)
-    dotStatements :: (Statements,Int,[Maybe String]) -> (String , [Maybe String] , Int)
+    dotStatements :: (Statements,Int,[(String,Int)]) -> (String , [(String,Int)] , Int)
+    dotStatements ([],t,last)  = ("" ,last,t)
     dotStatements ((a:b),t,last) = 
         let
             (cur_statement,node_list , new_node_id) = dotStatement (a,t,last)
             (nex_list , last_node_list , new_id) = (dotStatements (b,new_node_id,node_list))
         in
-        (cur_statement++"\n"++nex_list , last_node_list , new_id)
+            (cur_statement++"\n"++nex_list , last_node_list , new_id)
 
-    dotStatements (([]),t,last)  = ("" ,last,t)
+           
+    

@@ -5,9 +5,8 @@ x=v+a
 if a+v < 56
 	a=67
 	if a >0
-		a=98
 	end
-	g=737474
+	g=73
 end
 
 b=98
