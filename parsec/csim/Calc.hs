@@ -4,43 +4,9 @@ import Tokens
 import System.Environment
 import System.IO  
 import Control.Monad
-
-type Env = String -> Exp
-emptyEnv = error "Not found"
-envLookup s env = env s
-envBind s v env = (\s' -> if s == s' then v else env s)
-
-eval :: Exp -> Env -> Int
-eval (Int v) _         = v
-eval (Plus e1 e2) env  = (eval e1 env) + (eval e2 env)
-eval (Minus e1 e2) env = (eval e1 env) - (eval e2 env)
-eval (Times e1 e2) env = (eval e1 env) * (eval e2 env)
-eval (Div e1 e2) env   = (eval e1 env) `div` (eval e2 env)
-eval (Negate e) env    = -(eval e env)
-eval (Var s) env       = eval (envLookup s env) env
-eval (Let s e1 e2) env = eval e2 env'
-    where env' = envBind s e1 env
-    
-run :: Exp -> Int
-run e = eval e emptyEnv
-
-translateExp :: Exp -> String
-translateExp (Int v) = show v
-translateExp (Plus e1 e2) = (translateExp e1)++"+"++(translateExp e2)
-translateExp (Minus e1 e2) = (translateExp e1)++"-"++(translateExp e2)
-translateExp (Times e1 e2) = (translateExp e1)++"*"++(translateExp e2)
-translateExp (Div e1 e2) = (translateExp e1)++"/"++(translateExp e2)
-translateExp (Negate e) = "-"++(translateExp e)
-translateExp (Var v)    = v
-translateExp (Let s e1 e2) = ""
-
-translateStatement :: Statement -> String
-translateStatement (Assignment v e) = v++"="++(translateExp e)
-translateStatement (If cond st) = "if("++cond++"){\n"++(translateStatements st)++"\n}"
-
-translateStatements :: Statements -> String
-translateStatements (a:b) = (translateStatement a)++"\n"++(translateStatements b)
-translateStatements ([])  = ""  
+-- import Translate
+import Dot
+ 
 
 
 main :: IO ()
@@ -78,7 +44,9 @@ main = do
     contents <- readContent
 
     let ast = parseCalc (scanTokens contents)
-    putStr (translateStatements ast)
+
+    let (compiled,_,_) = (dotStatements (ast,0,[]))
+    putStr ("digraph{\n"++compiled++"\n}")
     -- print (run ast)
 
 

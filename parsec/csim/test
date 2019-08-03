@@ -1,8 +1,13 @@
-a = 5
-t = 8
-b = b+1
-r = 4-t
-if(a){
-	r = 9
-	y = 8-y
-}
+a=5
+v=6
+x=v+a
+
+if a+v < 56
+	a=67
+	if a >0
+	end
+	g=73
+end
+
+b=98
+
