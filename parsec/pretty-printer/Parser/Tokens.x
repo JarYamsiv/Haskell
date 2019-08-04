@@ -14,6 +14,7 @@ tokens :-
   let                           { \s -> TokenLet }
   in                            { \s -> TokenIn }
   if                            { \s -> TokenIf }
+  else                          { \s -> TokenElse }
   $digit+                       { \s -> TokenInt (read s) }
   \=                            { \s -> TokenEq }
   \+                            { \s -> TokenPlus }
@@ -33,6 +34,7 @@ tokens :-
 data Token = TokenLet
            | TokenIn
            | TokenIf
+           | TokenElse
            | TokenInt Int
            | TokenSym String
            | TokenEq

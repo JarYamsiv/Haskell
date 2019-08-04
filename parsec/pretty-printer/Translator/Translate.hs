@@ -1,19 +1,32 @@
 module Translator.Translate where
-	import Parser.Grammar
-	translateExp :: Exp -> String
-	translateExp (Int v) = show v
-	translateExp (Plus e1 e2) = (translateExp e1)++"+"++(translateExp e2)
-	translateExp (Minus e1 e2) = (translateExp e1)++"-"++(translateExp e2)
-	translateExp (Times e1 e2) = (translateExp e1)++"*"++(translateExp e2)
-	translateExp (Div e1 e2) = (translateExp e1)++"/"++(translateExp e2)
-	translateExp (Negate e) = "-"++(translateExp e)
-	translateExp (Var v)    = v
-	translateExp (Let s e1 e2) = ""
+    import Parser.Grammar
 
-	translateStatement :: Statement -> String
-	translateStatement (Assignment v e) = v++"="++(translateExp e)
-	translateStatement (If cond st) = "if("++cond++"){\n"++(translateStatements st)++"\n}"
+    spaces :: Int -> String
+    spaces 0 = ""
+    spaces x = "  "++spaces (x-1)
 
-	translateStatements :: Statements -> String
-	translateStatements (a:b) = (translateStatement a)++"\n"++(translateStatements b)
-	translateStatements ([])  = "" 
+
+    translateExp :: Exp -> Int -> String
+    translateExp (Int v)            t = show v
+    translateExp (Plus e1 e2)       t = (translateExp e1 t)++"+"++(translateExp e2 t)
+    translateExp (Minus e1 e2)      t = (translateExp e1 t)++"-"++(translateExp e2 t)
+    translateExp (Times e1 e2)      t = (translateExp e1 t)++"*"++(translateExp e2 t)
+    translateExp (Div e1 e2)        t = (translateExp e1 t)++"/"++(translateExp e2 t)
+    translateExp (Negate e)         t = "-"++(translateExp e t)
+    translateExp (Var v)            t = v
+    translateExp (Let s e1 e2)      t = ""
+
+    translateStatement :: Statement -> Int ->String
+    translateStatement (Assignment v e) t   = (spaces t)++ v++"="++(translateExp e t)
+
+    translateStatement (If cond st) t       = (spaces t)++ "if("++cond++"){\n"
+        ++(translateStatements st (t+1))++(spaces t)++"}\n"
+        
+    translateStatement (IfEl cond st1 st2) t = (spaces t)++ "if("++cond++"){\n"
+        ++(translateStatements st1 (t+1))++(spaces t)++"}\n"
+        ++(spaces t)++"else{\n"++(translateStatements st2 (t+1))++(spaces t)++"}\n"
+
+
+    translateStatements :: Statements ->Int -> String
+    translateStatements (a:b) t = (translateStatement a t)++"\n"++(translateStatements b t)
+    translateStatements ([]) t  = "" 

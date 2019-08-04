@@ -6,7 +6,7 @@ Parser/Tokens.hs : Parser/Tokens.x
 Parser/Grammar.hs : Parser/Grammar.y
 	happy Parser/Grammar.y
 
-Calc : Parser/Tokens.hs Parser/Grammar.hs Calc.hs
+Calc : Parser/Tokens.hs Parser/Grammar.hs Calc.hs Translator/Translate.hs
 	ghc --make Calc
 
 clean:

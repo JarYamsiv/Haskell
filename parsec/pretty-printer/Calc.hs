@@ -63,7 +63,7 @@ main = do
     contents <- readContent
 
     let ast = parseCalc (scanTokens contents)
-    putStr (translateStatements ast)
+    putStr (translateStatements ast 0)
     -- print (run ast)
 
 
