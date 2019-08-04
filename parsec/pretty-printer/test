@@ -5,5 +5,7 @@ r = 4-t
 if(a){
 	r = 9
 	y = 8-y
+	while(r){
 if(f){r=t}else{y=u+4*r}
+}
 }

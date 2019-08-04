@@ -21,10 +21,13 @@ module Translator.Translate where
 
     translateStatement (If cond st) t       = (spaces t)++ "if("++cond++"){\n"
         ++(translateStatements st (t+1))++(spaces t)++"}\n"
-        
+
     translateStatement (IfEl cond st1 st2) t = (spaces t)++ "if("++cond++"){\n"
         ++(translateStatements st1 (t+1))++(spaces t)++"}\n"
         ++(spaces t)++"else{\n"++(translateStatements st2 (t+1))++(spaces t)++"}\n"
+
+    translateStatement (While cond st) t= (spaces t)++"while("++cond++"){\n"
+        ++(translateStatements st (t+1))++(spaces t)++"}\n"
 
 
     translateStatements :: Statements ->Int -> String

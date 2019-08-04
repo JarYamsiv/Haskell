@@ -8,21 +8,22 @@ import Parser.Tokens
 %error { parseError }
 
 %token
-    let { TokenLet }
-    in  { TokenIn }
-    if  { TokenIf }
-    else { TokenElse }
-    int { TokenInt $$ }
-    var { TokenSym $$ }
-    '=' { TokenEq }
-    '+' { TokenPlus }
-    '-' { TokenMinus }
-    '*' { TokenTimes }
-    '/' { TokenDiv }
-    '(' { TokenLParen }
-    ')' { TokenRParen }
-    '{' { TokenLCurl}
-    '}' { TokenRCurl}
+    let   { TokenLet }
+    in    { TokenIn }
+    if    { TokenIf }
+    else  { TokenElse }
+    while { TokenWhile }
+    int   { TokenInt $$ }
+    var   { TokenSym $$ }
+    '='   { TokenEq }
+    '+'   { TokenPlus }
+    '-'   { TokenMinus }
+    '*'   { TokenTimes }
+    '/'   { TokenDiv }
+    '('   { TokenLParen }
+    ')'   { TokenRParen }
+    '{'   { TokenLCurl}
+    '}'   { TokenRCurl}
 
 %right in
 %nonassoc '>' '<'
@@ -38,6 +39,7 @@ Statements : Statement Statements {$1:$2}
 Statement : var '=' Exp      { Assignment $1 $3}
           | if '(' var ')' '{' Statements '}' {If $3 $6}
           | if '(' var ')' '{' Statements '}' else '{' Statements '}' {IfEl $3 $6 $10}
+          | while '(' var ')' '{' Statements '}' {While $3 $6}
 
 Exp : let var '=' Exp in Exp { Let $2 $4 $6 }
     | Exp '+' Exp            { Plus $1 $3 }
@@ -75,6 +77,7 @@ type Statements = [Statement]
 data Statement = Assignment String Exp
                 | If String Statements
                 | IfEl String Statements Statements
+                | While String Statements
                 deriving Show
 
 }
