@@ -1,12 +1,12 @@
 all: Calc
 
-parser/Tokens.hs : parser/Tokens.x
-	alex parser/Tokens.x
+Parser/Tokens.hs : Parser/Tokens.x
+	alex Parser/Tokens.x
 
-parser/Grammar.hs : parser/Grammar.y
-	happy parser/Grammar.y
+Parser/Grammar.hs : Parser/Grammar.y
+	happy Parser/Grammar.y
 
-Calc : parser/Tokens.hs parser/Grammar.hs Calc.hs
+Calc : Parser/Tokens.hs Parser/Grammar.hs Calc.hs
 	ghc --make Calc
 
 clean:
@@ -14,6 +14,7 @@ clean:
 
 test:Calc
 	./Calc test
+
 
 io:io.hs
 	ghc io.hs
