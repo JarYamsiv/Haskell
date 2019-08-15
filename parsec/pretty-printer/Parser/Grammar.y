@@ -80,4 +80,6 @@ data Statement = Assignment String Exp
                 | While String Statements
                 deriving Show
 
+data Condition = CVar String
+
 }

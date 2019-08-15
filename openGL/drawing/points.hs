@@ -1,7 +1,8 @@
 import Graphics.UI.GLUT
 
-myPoints :: [(GLfloat,GLfloat,GLfloat)]
-myPoints = [ (sin (2*pi*k/12), cos (2*pi*k/12), 0) | k <- [1..12] ]
+-- now the points can be created from a function
+myPoints ::Float -> [(GLfloat,GLfloat,GLfloat)]
+myPoints x = [ (sin (2*pi*k/x), cos (2*pi*k/x), 0) | k <- [1..x] ]
 
 main :: IO ()
 main = do
@@ -13,5 +14,6 @@ main = do
 display :: DisplayCallback
 display = do 
   clear [ColorBuffer]
-  renderPrimitive Polygon $ mapM_ (\(x, y, z) -> vertex $ Vertex3 x y z) myPoints
+  renderPrimitive Polygon $ mapM_ (\(x, y, z) -> vertex $ Vertex3 x y z) $ pts
   flush
+  where pts = myPoints 100

@@ -2,8 +2,7 @@ module Translator.Translate where
     import Parser.Grammar
 
     spaces :: Int -> String
-    spaces 0 = ""
-    spaces x = "  "++spaces (x-1)
+    spaces x = replicate (2*x) ' ' --tabs are considered as two spaces
 
 
     translateExp :: Exp -> Int -> String
