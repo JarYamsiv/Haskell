@@ -1,0 +1,13 @@
+a=5
+v=6
+x=v+a
+
+if a+v < 56
+	a=67
+	if a >0
+	end
+	g=73
+end
+
+b=98
+

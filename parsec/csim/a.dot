@@ -1,0 +1,26 @@
+digraph{
+a0[shape=box label="a=5"]
+
+a1[shape=box label="v=6"]
+a0->a1
+
+a2[shape=box label="x=v+a"]
+a1->a2
+
+i3[label="a+v<56"]a2->i3
+a4[shape=box label="a=67"]
+i3->a4[color=green label="true"]
+
+i5[label="a>0"]a4->i5
+
+a6[shape=box label="g=73"]
+i5->a6[color=red label="false"]
+i5->a6[color=green label="true"]
+
+
+a7[shape=box label="b=98"]
+i3->a7[color=red label="false"]
+a6->a7
+
+
+}
